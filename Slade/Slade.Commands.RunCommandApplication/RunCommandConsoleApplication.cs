@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Slade.Commands.Parsing;
+using System;
 
 namespace Slade.Commands.RunCommandApplication
 {
@@ -22,9 +23,21 @@ namespace Slade.Commands.RunCommandApplication
         /// <summary>
         /// Executes the operations contained within the console application implementation.
         /// </summary>
-        protected override void RunCore()
+        /// <param name="commands">A set of commands parsed from the given command-line arguments.</param>
+        protected override void RunCore(CommandResultSet commands)
         {
-            throw new System.NotImplementedException();
+            HandleRegistration(commands);
+            HandleLaunching(commands);
+        }
+
+        private void HandleRegistration(CommandResultSet commands)
+        {
+            // TODO: Check to see if we have a registration command.
+        }
+
+        private void HandleLaunching(CommandResultSet commands)
+        {
+            // TODO: Check to see if we have a launching command.
         }
     }
 }

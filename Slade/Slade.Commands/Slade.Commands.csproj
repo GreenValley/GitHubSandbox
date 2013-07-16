@@ -45,6 +45,7 @@
     <Compile Include="Parsing\CommandLineParser.cs" />
     <Compile Include="Parsing\CommandLineRuleSet.cs" />
     <Compile Include="Parsing\CommandResult.cs" />
+    <Compile Include="Parsing\CommandResultSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

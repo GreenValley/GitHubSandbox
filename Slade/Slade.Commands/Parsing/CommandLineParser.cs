@@ -29,7 +29,7 @@ namespace Slade.Commands.Parsing
         {
             VerificationProvider.VerifyNotNull(arguments, "arguments");
 
-            return null;
+            return EmptyArray<CommandResult>.Instance;
         }
     }
 }

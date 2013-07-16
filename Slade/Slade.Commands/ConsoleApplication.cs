@@ -1,6 +1,6 @@
 ﻿using Slade.Commands.Parsing;
+using Slade.Conversion;
 using System;
-using System.Collections.Generic;
 
 namespace Slade.Commands
 {
@@ -11,9 +11,10 @@ namespace Slade.Commands
     public abstract class ConsoleApplication
     {
         private readonly CommandLineParser mParser = new CommandLineParser();
+        private readonly ObjectConverterFactory mObjectConverterFactory = new ObjectConverterFactory();
 
         private readonly string[] mArguments;
-        private IEnumerable<CommandResult> mCommands;
+        private CommandResultSet mCommands;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleApplication" /> class.
@@ -58,7 +59,7 @@ namespace Slade.Commands
 
             try
             {
-                RunCore();
+                RunCore(mCommands);
             }
             catch (Exception ex)
             {
@@ -69,7 +70,8 @@ namespace Slade.Commands
         /// <summary>
         /// Executes the operations contained within the console application implementation.
         /// </summary>
-        protected abstract void RunCore();
+        /// <param name="commands">A set of commands parsed from the given command-line arguments.</param>
+        protected abstract void RunCore(CommandResultSet commands);
 
         private void EnsureArgumentsParsed()
         {
@@ -77,7 +79,8 @@ namespace Slade.Commands
             {
                 try
                 {
-                    mCommands = mParser.Parse(mArguments);
+                    var parsedCommands = mParser.Parse(mArguments);
+                    mCommands = new CommandResultSet(mObjectConverterFactory, parsedCommands);
                 }
                 catch (Exception ex)
                 {

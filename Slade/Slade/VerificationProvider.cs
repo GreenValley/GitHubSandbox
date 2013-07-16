@@ -21,5 +21,22 @@ namespace Slade
                 throw new ArgumentNullException(parameterName);
             }
         }
+
+        /// <summary>
+        /// Checks that the given string value parameter is valid in terms of not being null or empty
+        /// and throws an instance of the <see cref="ArgumentException"/> class if it is not valid.
+        /// </summary>
+        /// <param name="parameter">The string value parameter to verify.</param>
+        /// <param name="parameterName">The name of the parameter being verified.</param>
+        /// <param name="allowWhitespace">An optional value that indicates whether the string may be deemed valid if it
+        /// contains only whitespace characters. The default is false.</param>
+        public static void VerifyValidString(string parameter, string parameterName, bool allowWhitespace = false)
+        {
+            if ((allowWhitespace && string.IsNullOrEmpty(parameter))
+                || (!allowWhitespace && string.IsNullOrWhiteSpace(parameter)))
+            {
+                throw new ArgumentException(parameterName);
+            }
+        }
     }
 }

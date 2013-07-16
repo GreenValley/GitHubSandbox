@@ -39,6 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conversion\IObjectConverter.cs" />
+    <Compile Include="Conversion\ObjectConverter.cs" />
+    <Compile Include="Conversion\ObjectConverterFactory.cs" />
+    <Compile Include="Conversion\StringObjectConverter.cs" />
+    <Compile Include="EmptyArray.cs" />
     <Compile Include="VerificationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
