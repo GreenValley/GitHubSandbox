@@ -14,10 +14,14 @@
 		static CommandLineRuleSet()
 		{
 			// Configure the Windows and Unix profile rule sets
+			WindowsProfile.Prefixes = CommandPrefixes.ForwardSlash | CommandPrefixes.SingleHyphen;
+			WindowsProfile.Separators = CommandSeparators.Equals | CommandSeparators.Colon;
 			WindowsProfile.AllowCombinedSwitches = false;
 			WindowsProfile.AllowMultipleValues = true;
 			WindowsProfile.AllowSwitches = true;
 
+			UnixProfile.Prefixes = CommandPrefixes.SingleHyphen | CommandPrefixes.DoubleHyphen;
+			WindowsProfile.Separators = CommandSeparators.Equals | CommandSeparators.Colon;
 			UnixProfile.AllowCombinedSwitches = true;
 			UnixProfile.AllowMultipleValues = true;
 			UnixProfile.AllowSwitches = true;
@@ -38,6 +42,16 @@
 		{
 			get { return sUnixProfile; }
 		}
+
+		/// <summary>
+		/// Gets or sets the type of characters that denote valid prefixes for command keys.
+		/// </summary>
+		public CommandPrefixes Prefixes { get; set; }
+
+		/// <summary>
+		/// Gets or sets the type of characters that denote valid separators for command keys and values.
+		/// </summary>
+		public CommandSeparators Separators { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value that specifies whether a command may contain multiple values delimited by a valid separator character.
