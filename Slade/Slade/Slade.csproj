@@ -44,6 +44,8 @@
     <Compile Include="Conversion\ObjectConverterFactory.cs" />
     <Compile Include="Conversion\StringObjectConverter.cs" />
     <Compile Include="EmptyArray.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="VerificationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

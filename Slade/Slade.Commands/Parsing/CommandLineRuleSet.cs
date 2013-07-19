@@ -16,13 +16,11 @@
 			// Configure the Windows and Unix profile rule sets
 			WindowsProfile.Prefixes = CommandPrefixes.ForwardSlash | CommandPrefixes.SingleHyphen;
 			WindowsProfile.Separators = CommandSeparators.Equals | CommandSeparators.Colon;
-			WindowsProfile.AllowCombinedSwitches = false;
 			WindowsProfile.AllowMultipleValues = true;
 			WindowsProfile.AllowSwitches = true;
 
 			UnixProfile.Prefixes = CommandPrefixes.SingleHyphen | CommandPrefixes.DoubleHyphen;
 			WindowsProfile.Separators = CommandSeparators.Equals | CommandSeparators.Colon;
-			UnixProfile.AllowCombinedSwitches = true;
 			UnixProfile.AllowMultipleValues = true;
 			UnixProfile.AllowSwitches = true;
 		}
@@ -64,18 +62,6 @@
 		public bool AllowSwitches { get; set; }
 
 		/// <summary>
-		/// Gets or sets a value that specifies whether a command may be comprised solely of a combination of single letter commands.
-		/// </summary>
-		/// <example>
-		/// The following is a normally valid approach to supplying commands, where -a and -b represent single letter commands:
-		///		program -a -b
-		///
-		/// Setting this property to true will allow the commands to be combined as follows:
-		///		program -ab
-		/// </example>
-		public bool AllowCombinedSwitches { get; set; }
-
-		/// <summary>
 		/// Copies all configuration details from the given rule set into the current rule set.
 		/// </summary>
 		/// <param name="ruleSet">The rule set to copy the configuration details from.</param>
@@ -85,7 +71,8 @@
 			VerificationProvider.VerifyNotNull(ruleSet, "ruleSet");
 
 			// Copy the configuration details
-			AllowCombinedSwitches = ruleSet.AllowCombinedSwitches;
+			Prefixes = ruleSet.Prefixes;
+			Separators = ruleSet.Separators;
 			AllowMultipleValues = ruleSet.AllowMultipleValues;
 			AllowSwitches = ruleSet.AllowSwitches;
 		}

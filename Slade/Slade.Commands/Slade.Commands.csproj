@@ -44,6 +44,7 @@
     <Compile Include="ConsoleMessageType.cs" />
     <Compile Include="Parsing\CommandLineParser.cs" />
     <Compile Include="Parsing\CommandLineRuleSet.cs" />
+    <Compile Include="Parsing\CommandParsingContext.cs" />
     <Compile Include="Parsing\CommandPrefixes.cs" />
     <Compile Include="Parsing\CommandResult.cs" />
     <Compile Include="Parsing\CommandResultSet.cs" />

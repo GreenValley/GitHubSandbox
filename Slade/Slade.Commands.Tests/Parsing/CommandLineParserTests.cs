@@ -27,7 +27,7 @@ namespace Slade.Commands.Tests.Parsing
 			parser.RuleSet.AllowSwitches = true;
 			parser.RuleSet.Prefixes = CommandPrefixes.DoubleHyphen;
 
-			string[] arguments = new string[1] { "/switch" };
+			string[] arguments = new string[1] { "--switch" };
 			var commands = parser.Parse(arguments).ToArray();
 
 			Assert.AreEqual(1, commands.Length);
@@ -112,42 +112,6 @@ namespace Slade.Commands.Tests.Parsing
 
 		/// <summary>
 		/// Configuration:
-		///		AllowCombinedValues	True
-		///		Prefixes			SingleHyphen
-		///
-		/// Input:
-		///		-ab
-		///
-		/// Output:
-		///		2 Commands
-		///			Key				"a"
-		///			HasValue		False
-		///			Key				"b"
-		///			HasValue		False
-		/// </summary>
-		[TestMethod]
-		public void Parse_AllowCombinedValuesSingleHyphenPrefix_TwoCommands()
-		{
-			var parser = new CommandLineParser();
-			parser.RuleSet.AllowCombinedSwitches = true;
-			parser.RuleSet.Prefixes = CommandPrefixes.SingleHyphen;
-
-			string[] arguments = new string[1] { "-ab" };
-			var commands = parser.Parse(arguments).ToArray();
-
-			Assert.AreEqual(2, commands.Length);
-
-			var command = commands[0];
-			Assert.AreEqual("a", command.Key);
-			Assert.IsFalse(command.HasValue);
-
-			command = commands[1];
-			Assert.AreEqual("b", command.Key);
-			Assert.IsFalse(command.HasValue);
-		}
-
-		/// <summary>
-		/// Configuration:
 		///		Prefixes			SingleHyphen
 		///
 		/// Input:
@@ -166,7 +130,7 @@ namespace Slade.Commands.Tests.Parsing
 			var parser = new CommandLineParser();
 			parser.RuleSet.Prefixes = CommandPrefixes.SingleHyphen;
 
-			string[] arguments = new string[1] { "-a -b" };
+			string[] arguments = new string[2] { "-a", "-b" };
 			var commands = parser.Parse(arguments).ToArray();
 
 			Assert.AreEqual(2, commands.Length);
