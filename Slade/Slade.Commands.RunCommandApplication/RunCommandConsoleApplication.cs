@@ -1,6 +1,7 @@
 ﻿using Slade.Commands.Parsing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Slade.Commands.RunCommandApplication
 {
@@ -89,7 +90,18 @@ namespace Slade.Commands.RunCommandApplication
 
         private void HandleLaunching(CommandResultSet commands)
         {
-            // TODO: Check to see if we have a launching command.
+            string registrationName;
+
+            if (!commands.TryGetValue<string>("launch", out registrationName))
+            {
+                ConsoleHelper.WriteLine(ConsoleMessageType.Warning, "No registration exists under the name '{0}'.",
+                                        registrationName);
+
+                return;
+            }
+
+            // Try to launch a new process using the program path registered under the name
+            Process.Start(mProgramRegistrations[registrationName]);
         }
     }
 }
