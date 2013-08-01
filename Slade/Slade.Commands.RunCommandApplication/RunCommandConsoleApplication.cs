@@ -1,6 +1,5 @@
 ﻿using Slade.Commands.Parsing;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Slade.Commands.RunCommandApplication
@@ -9,19 +8,17 @@ namespace Slade.Commands.RunCommandApplication
     /// Application used to provide a Run command that can be used to register executables and script files
     /// that can be run through the use of this application by specifying the registered name.
     /// </summary>
-    public class RunCommandConsoleApplication : ConsoleApplication
+    public class RunCommandConsoleApplication : ConsoleApplication<IRunCommandApplicationContext>
     {
-        private readonly Dictionary<string, string> mProgramRegistrations =
-            new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RunCommandConsoleApplication" /> class.
         /// </summary>
+        /// <param name="applicationContext">An instance of the context required for the current application.</param>
         /// <param name="arguments">A collection of all arguments passed through to the application
         /// from the command line.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the given collection of arguments is null.</exception>
-        public RunCommandConsoleApplication(string[] arguments)
-            : base(arguments)
+        /// <exception cref="ArgumentNullException">Thrown when the given application context or collection of arguments is null.</exception>
+        public RunCommandConsoleApplication(IRunCommandApplicationContext applicationContext, string[] arguments)
+            : base(applicationContext, arguments)
         {
             Configure(
                 configuration =>
@@ -73,7 +70,7 @@ namespace Slade.Commands.RunCommandApplication
 
             // Check we haven't already made a registration with this name
             // TODO: This information needs to be persisted to some file store.
-            if (mProgramRegistrations.ContainsKey(registrationName))
+            if (ApplicationContext.ProgramRegistrations.ContainsKey(registrationName))
             {
                 ConsoleHelper.WriteLine(ConsoleMessageType.Warning,
                                         "A program has already been registered under the name '{0}' and will be overridden.",
@@ -81,7 +78,7 @@ namespace Slade.Commands.RunCommandApplication
             }
 
             // Store the registration, overriding any existing registrations
-            mProgramRegistrations[registrationName] = programPath;
+            ApplicationContext.ProgramRegistrations[registrationName] = programPath;
 
             ConsoleHelper.WriteLine(ConsoleMessageType.Information,
                                     "A registration has been successfully made under '{0}' for the path '{1}'.",
@@ -101,7 +98,7 @@ namespace Slade.Commands.RunCommandApplication
             }
 
             // Try to launch a new process using the program path registered under the name
-            Process.Start(mProgramRegistrations[registrationName]);
+            Process.Start(ApplicationContext.ProgramRegistrations[registrationName]);
         }
     }
 }

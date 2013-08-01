@@ -42,6 +42,7 @@
     <Compile Include="ConsoleApplication.cs" />
     <Compile Include="ConsoleHelper.cs" />
     <Compile Include="ConsoleMessageType.cs" />
+    <Compile Include="IApplicationContext.cs" />
     <Compile Include="Parsing\CommandLineParser.cs" />
     <Compile Include="Parsing\CommandLineRuleSet.cs" />
     <Compile Include="Parsing\CommandParsingContext.cs" />

@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRunCommandApplicationContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunCommandApplicationContext.cs" />
     <Compile Include="RunCommandConsoleApplication.cs" />
   </ItemGroup>
   <ItemGroup>

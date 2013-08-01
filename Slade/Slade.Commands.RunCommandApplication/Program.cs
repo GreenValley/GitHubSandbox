@@ -11,7 +11,9 @@
         /// <param name="arguments">A collection of argument provided by a command-line interface.</param>
         public static void Main(string[] arguments)
         {
-            var application = new RunCommandConsoleApplication(arguments);
+            var context = new RunCommandApplicationContext();
+            var application = new RunCommandConsoleApplication(context, arguments);
+
             application.Run();
         }
     }

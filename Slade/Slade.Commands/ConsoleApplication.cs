@@ -8,10 +8,13 @@ namespace Slade.Commands
     /// Provides an abstract implementation of an application used to handle interaction through the
     /// use of a command line interface.
     /// </summary>
-    public abstract class ConsoleApplication
+    public abstract class ConsoleApplication<TContext>
+        where TContext : IApplicationContext
     {
         private readonly CommandLineParser mParser = new CommandLineParser();
         private readonly ObjectConverterFactory mObjectConverterFactory = new ObjectConverterFactory();
+
+        private readonly TContext mApplicationContext;
 
         private readonly string[] mArguments;
         private CommandResultSet mCommands;
@@ -19,14 +22,28 @@ namespace Slade.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleApplication" /> class.
         /// </summary>
+        /// <param name="applicationContext">An instance of the strongly-typed application context.</param>
         /// <param name="arguments">A collection of all arguments passed through to the application
         /// from the command line.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the given collection of arguments is null.</exception>
-        protected ConsoleApplication(string[] arguments)
+        /// <exception cref="ArgumentNullException">Thrown when the given application context or collection of arguments is null.</exception>
+        protected ConsoleApplication(TContext applicationContext, string[] arguments)
         {
+            VerificationProvider.VerifyNotNull(applicationContext, "applicationContext");
             VerificationProvider.VerifyNotNull(arguments, "arguments");
 
             mArguments = arguments;
+
+            // Initialize and load the application context
+            mApplicationContext = applicationContext;
+            mApplicationContext.Load();
+        }
+
+        /// <summary>
+        /// Provides access to the strongly-typed context for the current application.
+        /// </summary>
+        protected TContext ApplicationContext
+        {
+            get { return mApplicationContext; }
         }
 
         /// <summary>
@@ -35,7 +52,7 @@ namespace Slade.Commands
         /// <param name="configuration">An action used to configure the rule set being used by the application for
         /// defining the context parameters for the command-line argument parsing operation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given configuration action is null.</exception>
-        protected ConsoleApplication Configure(Action<CommandLineRuleSet> configuration)
+        protected ConsoleApplication<TContext> Configure(Action<CommandLineRuleSet> configuration)
         {
             VerificationProvider.VerifyNotNull(configuration, "configuration");
 
