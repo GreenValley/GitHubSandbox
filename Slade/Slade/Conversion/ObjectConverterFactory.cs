@@ -18,6 +18,7 @@ namespace Slade.Conversion
         {
             // Set up all known object converters
             Register<string, StringObjectConverter>();
+            Register<string[], StringArrayObjectConverter>();
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace Slade.Conversion
 
             // Check for a registration under the specified type
             var targetType = typeof(TTarget);
-            if (mConverters.TryGetValue(targetType, out registration) || registration == null)
+            if (!mConverters.TryGetValue(targetType, out registration) || registration == null)
             {
                 throw new NotSupportedException(
                     string.Format("No converters are registered that support conversion of objects to the type '{0}'.",
