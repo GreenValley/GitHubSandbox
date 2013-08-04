@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Conversion\IObjectConverter.cs" />
     <Compile Include="Conversion\ObjectConverter.cs" />
     <Compile Include="Conversion\ObjectConverterFactory.cs" />
