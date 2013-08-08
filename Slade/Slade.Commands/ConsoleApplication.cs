@@ -11,9 +11,9 @@ namespace Slade.Commands
     public abstract class ConsoleApplication<TContext>
         where TContext : IApplicationContext
     {
-        private readonly CommandLineParser mParser = new CommandLineParser();
-        private readonly ExecutableCommandRegistrar mRegistrar = new ExecutableCommandRegistrar();
         private readonly ObjectConverterFactory mObjectConverterFactory = new ObjectConverterFactory();
+        private readonly CommandLineParser mParser = new CommandLineParser();
+        private readonly ExecutableCommandRegistrar mRegistrar;
 
         private readonly TContext mApplicationContext;
 
@@ -33,6 +33,8 @@ namespace Slade.Commands
         {
             VerificationProvider.VerifyNotNull(applicationContext, "applicationContext");
             VerificationProvider.VerifyNotNull(arguments, "arguments");
+
+            mRegistrar = new ExecutableCommandRegistrar(mObjectConverterFactory);
 
             mArguments = arguments;
 
@@ -124,7 +126,10 @@ namespace Slade.Commands
         /// Executes the operations contained within the console application implementation.
         /// </summary>
         /// <param name="commands">A set of commands parsed from the given command-line arguments.</param>
-        protected abstract void RunCore(CommandResultSet commands);
+        protected virtual void RunCore(CommandResultSet commands)
+        {
+            // TODO: Perform automatic command execution.
+        }
 
         private void EnsureArgumentsParsed()
         {
