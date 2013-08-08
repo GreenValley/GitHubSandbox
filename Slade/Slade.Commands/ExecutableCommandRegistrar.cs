@@ -47,5 +47,33 @@ namespace Slade.Commands
 
             mCommandRegistrations[name] = new ExecutableCommandRegistration<TValue>(name, executionAction, mObjectConverterFactory);
         }
+
+        /// <summary>
+        /// Retrieves a collection of the names of all registered commands.
+        /// </summary>
+        /// <returns>A collection of registered command names.</returns>
+        public IEnumerable<string> GetNames()
+        {
+            return mCommandRegistrations.Keys;
+        }
+
+        /// <summary>
+        /// Attempts to retrieve an executable command registered under the given name.
+        /// </summary>
+        /// <param name="name">The name of the command registration to find.</param>
+        /// <returns>The executable command registered under the given name if it exists; otherwise null.</returns>
+        /// <exception cref="ArgumentException">Thrown when the given command name is not a valid string.</exception>
+        public IExecutableCommandRegistration GetCommandRegistration(string name)
+        {
+            VerificationProvider.VerifyValidString(name, "name");
+
+            IExecutableCommandRegistration registration;
+            if (!mCommandRegistrations.TryGetValue(name, out registration))
+            {
+                return null;
+            }
+
+            return registration;
+        }
     }
 }

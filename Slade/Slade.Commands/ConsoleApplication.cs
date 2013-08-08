@@ -1,6 +1,8 @@
 ﻿using Slade.Commands.Parsing;
 using Slade.Conversion;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Slade.Commands
 {
@@ -126,9 +128,47 @@ namespace Slade.Commands
         /// Executes the operations contained within the console application implementation.
         /// </summary>
         /// <param name="commands">A set of commands parsed from the given command-line arguments.</param>
+        /// <remarks>
+        /// <para>
+        /// The default implementation of this method contains the algorithmic content for automatic execution of
+        /// known and registered commands. Any overriding of this functionality should ideally call back to the
+        /// base implementation, unless this behaviour is undesirable in the context of the application implementation.
+        /// </para>
+        /// </remarks>
         protected virtual void RunCore(CommandResultSet commands)
         {
-            // TODO: Perform automatic command execution.
+            CheckHelpCommand(commands);
+            PerformAutomaticCommandExecution(commands);
+        }
+
+        private void CheckHelpCommand(IEnumerable<CommandResult> commands)
+        {
+            if (commands.Any(command => "help".Equals(command.Key ?? (command.Value as string))))
+            {
+                // Display a list of supported commands
+                string supportedCommandNames = String.Join(", ", mRegistrar.GetNames());
+                ConsoleHelper.WriteLine(ConsoleMessageType.Information, "Supported commands: {0}", supportedCommandNames);
+            }
+        }
+
+        private void PerformAutomaticCommandExecution(IEnumerable<CommandResult> commands)
+        {
+            // Get a performance ordered collection of registered command names
+            string[] registeredCommandNames = mRegistrar.GetNames().ToArray();
+            Array.Sort(registeredCommandNames);
+
+            foreach (var command in commands)
+            {
+                // Check to see if the command has been registered
+                if (Array.BinarySearch(registeredCommandNames, command.Key) < 0)
+                {
+                    continue;
+                }
+
+                // Get hold of the command registration from the registrar and execute it
+                var registration = mRegistrar.GetCommandRegistration(command.Key);
+                registration.Execute(command);
+            }
         }
 
         private void EnsureArgumentsParsed()
