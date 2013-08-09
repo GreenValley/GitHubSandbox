@@ -68,10 +68,6 @@
       <Project>{9dff9db5-2515-4fb1-9d71-0ca88a7b9dd4}</Project>
       <Name>Slade.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Slade\Slade.csproj">
-      <Project>{c7d2c693-bbcc-41f0-8000-701e74c31777}</Project>
-      <Name>Slade</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
