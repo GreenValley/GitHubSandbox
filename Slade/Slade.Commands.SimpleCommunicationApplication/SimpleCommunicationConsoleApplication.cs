@@ -1,5 +1,8 @@
 ﻿using Slade.Commands.Parsing;
+using Slade.Commands.SimpleCommunicationApplication.Networking;
 using System;
+using System.ServiceModel;
+using System.Threading;
 
 namespace Slade.Commands.SimpleCommunicationApplication
 {
@@ -8,6 +11,8 @@ namespace Slade.Commands.SimpleCommunicationApplication
     /// </summary>
     public class SimpleCommunicationConsoleApplication : ConsoleApplication<ISimpleCommunicationApplicationContext>
     {
+        private readonly AutoResetEvent mWaitHandle = new AutoResetEvent(initialState: false);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleCommunicationConsoleApplication"/> class.
         /// </summary>
@@ -41,16 +46,22 @@ namespace Slade.Commands.SimpleCommunicationApplication
             registrar.Register<string>("send", HandleSending);
         }
 
-        private void HandleListening(string listenInformation)
+        private void HandleListening(string address)
         {
-            // TODO: Determine appropriate arguments.
-            // TODO: Set up a listening channel.
+            var service = new SimpleCommunicationService();
+            service.MessageReceived += message => ConsoleHelper.WriteLine(ConsoleMessageType.Information, message);
+
+            var host = new ServiceHost(service);
+            host.AddServiceEndpoint(typeof(ISimpleCommunicationService), new BasicHttpBinding(), address);
+
+            host.Open();
+            mWaitHandle.WaitOne();
         }
 
-        private void HandleSending(string sendInformation)
+        private void HandleSending(string message)
         {
-            // TODO: Determine appropriate arguments.
-            // TODO: Set up a transmission channel.
+            var serviceClient = new SimpleCommunicationServiceClient();
+            serviceClient.SendMessage(message);
         }
     }
 }
