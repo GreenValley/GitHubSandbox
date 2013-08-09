@@ -35,11 +35,11 @@
                                 Mode=TwoWay}" />
 
         <!--  Connection Instigation Button  -->
-        <!--  TODO: Command  -->
         <Button Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
                 HorizontalAlignment="Right"
+                Command="{Binding RefreshConnectionCommand}"
                 Content="Refresh Connection" />
     </Grid>
 </UserControl>

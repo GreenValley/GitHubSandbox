@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace Slade.Applications.ClientServerApplication.ViewModels
 {
@@ -19,7 +20,14 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             VerificationProvider.VerifyNotNull(connectionInformation, "connectionInformation");
 
             mConnectionInformation = connectionInformation;
+
+            RefreshConnectionCommand = new DelegateCommand(x => RefreshConnection());
         }
+
+        /// <summary>
+        /// Provides access to the command used to refresh the network connection.
+        /// </summary>
+        public DelegateCommand RefreshConnectionCommand { get; private set; }
 
         /// <summary>
         /// Provides access to the current configurable network connection information.
@@ -27,6 +35,11 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         public ConnectionInformation ConnectionInformation
         {
             get { return mConnectionInformation; }
+        }
+
+        private void RefreshConnection()
+        {
+            MessageBox.Show("TODO: Refresh the connection.");
         }
     }
 }
