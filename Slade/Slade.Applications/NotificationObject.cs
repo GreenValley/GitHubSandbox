@@ -21,18 +21,21 @@ namespace Slade.Applications
         /// <param name="value">The new value to be given to the referenced variable.</param>
         /// <param name="propertyNames">An optional collection of names of properties that are affected
         /// by the change in the value of the referenced variable.</param>
-        public void SetValue<TValue>(ref TValue variable, TValue value, params string[] propertyNames)
+        /// <returns>True if the value was changed and the notification propagated.</returns>
+        public bool SetValue<TValue>(ref TValue variable, TValue value, params string[] propertyNames)
         {
             // Run a simple check to see if the value has actually changed
             if (Object.Equals(variable, value))
             {
-                return;
+                return false;
             }
 
             // Update the value of the referenced variable and notify listeners of affected properties
             variable = value;
 
             OnPropertyChanged(propertyNames);
+
+            return true;
         }
 
         /// <summary>

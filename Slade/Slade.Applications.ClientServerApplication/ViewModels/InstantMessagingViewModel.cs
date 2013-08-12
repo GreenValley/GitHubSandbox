@@ -16,6 +16,8 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         private readonly ObservableCollection<CommunicationMessage> mMessages =
             new ObservableCollection<CommunicationMessage>();
 
+        private string mCurrentMessage;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionInformation"/> class.
         /// </summary>
@@ -27,7 +29,8 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
 
             mConnectionInformation = connectionInformation;
 
-            SendMessageCommand = new DelegateCommand(x => SendMessage((string)x), CanSendMessage);
+            // Note: The command cannot use a command parameter as we are specifically acting upon the CurrentMessage property.
+            SendMessageCommand = new DelegateCommand(x => SendMessage(), x => CanSendMessage());
         }
 
         /// <summary>
@@ -51,18 +54,30 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             get { return mMessages; }
         }
 
-        private void SendMessage(string message)
+        /// <summary>
+        /// Gets or sets the message from the user ready to send to the recipient.
+        /// </summary>
+        public string CurrentMessage
+        {
+            get { return mCurrentMessage; }
+            set { SetValue<string>(ref mCurrentMessage, value, "CurrentMessage"); }
+        }
+
+        private void SendMessage()
         {
             // Log the message locally so we can keep track of sent messages
-            var communicationMessage = new CommunicationMessage(ConnectionInformation.Username, message, DateTime.Now);
+            var communicationMessage = new CommunicationMessage(ConnectionInformation.Username, CurrentMessage, DateTime.Now, isLocalUser: true);
             mMessages.Add(communicationMessage);
 
             // TODO: Transmit the message to the recipient.
+
+            // Clear the message so the user can type a new one
+            CurrentMessage = String.Empty;
         }
 
-        private static bool CanSendMessage(object parameter)
+        private bool CanSendMessage()
         {
-            return !String.IsNullOrWhiteSpace(parameter as string);
+            return !String.IsNullOrWhiteSpace(CurrentMessage);
         }
     }
 }

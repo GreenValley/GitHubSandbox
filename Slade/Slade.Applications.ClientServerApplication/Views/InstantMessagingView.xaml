@@ -23,28 +23,74 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <!--  TODO  -->
-                    <TextBlock Text="{Binding Message}" />
+                        <!--  Username  -->
+                        <!--  Note: Displayed in the left column for a local user, and right column for a remote user.  -->
+                        <TextBlock Grid.Column="0"
+                                   FontWeight="Bold"
+                                   Text="{Binding Username}"
+                                   Visibility="{Binding IsLocalUser,
+                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance}}" />
+                        <TextBlock Grid.Column="4"
+                                   FontWeight="Bold"
+                                   Text="{Binding Username}"
+                                   Visibility="{Binding IsLocalUser,
+                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance},
+                                                        ConverterParameter=reverse}" />
+
+                        <!--  Message Content  -->
+                        <TextBlock Grid.Column="2"
+                                   FontStyle="Italic"
+                                   FontWeight="Normal"
+                                   Text="{Binding Message}" />
+
+                        <!--  Timestamp  -->
+                        <!--  Note: Displayed in the right column for a local user, and left column for a remote user.  -->
+                        <TextBlock Grid.Column="0"
+                                   Foreground="Gray"
+                                   Text="{Binding Timestamp,
+                                                  StringFormat={}({0}),
+                                                  Converter={x:Static Member=converters:DateTimeConverter.Instance}}"
+                                   Visibility="{Binding IsLocalUser,
+                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance},
+                                                        ConverterParameter=reverse}" />
+                        <TextBlock Grid.Column="4"
+                                   Foreground="Gray"
+                                   Text="{Binding Timestamp,
+                                                  StringFormat={}({0}),
+                                                  Converter={x:Static Member=converters:DateTimeConverter.Instance}}"
+                                   Visibility="{Binding IsLocalUser,
+                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance}}" />
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <!--  Current Message Text  -->
-        <TextBox x:Name="CurrentMessage"
-                 Grid.Row="2"
+        <TextBox Grid.Row="2"
                  Grid.Column="0"
                  AcceptsReturn="True"
                  IsEnabled="{Binding Path=ConnectionInformation.IsEditing,
                                      Converter={x:Static Member=converters:BooleanConverter.Instance},
-                                     ConverterParameter=reverse}" />
+                                     ConverterParameter=reverse}"
+                 PreviewKeyDown="CurrentMessage_PreviewKeyDown"
+                 Text="{Binding CurrentMessage,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
 
         <!--  Send Message Button  -->
-        <Button Grid.Row="2"
+        <Button x:Name="SendMessageButton"
+                Grid.Row="2"
                 Grid.Column="2"
                 Command="{Binding SendMessageCommand}"
-                CommandParameter="{Binding Text,
-                                           ElementName=CurrentMessage}"
                 Content="Send">
 
             <Button.IsEnabled>
@@ -54,8 +100,7 @@
                              Path="ConnectionInformation.IsEditing" />
                     <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
-                             ElementName="CurrentMessage"
-                             Path="Text" />
+                             Path="CurrentMessage" />
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
