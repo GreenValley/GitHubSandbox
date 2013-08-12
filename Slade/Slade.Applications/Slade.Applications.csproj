@@ -36,7 +36,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\AndOperator.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\ConverterBase.cs" />
+    <Compile Include="Converters\EmptyStringConverter.cs" />
+    <Compile Include="Converters\MultiValueConverterBase.cs" />
+    <Compile Include="Converters\OrOperator.cs" />
     <Compile Include="Converters\ValueConverterBase.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="NotificationObject.cs" />

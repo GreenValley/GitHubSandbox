@@ -1,11 +1,68 @@
 ﻿<UserControl x:Class="Slade.Applications.ClientServerApplication.Views.InstantMessagingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications">
 
     <Grid>
-        <Button HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="TODO: Instant Messaging Information Panel"
-                IsEnabled="{Binding Path=ConnectionInformation.IsEditing}" />
+        <Grid.Resources>
+            <converters:BooleanConverter x:Key="BooleanConverter" />
+            <converters:EmptyStringConverter x:Key="EmptyStringConverter" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Communication Message Log View  -->
+        <ListView Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  ItemsSource="{Binding Messages}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+
+                    <!--  TODO  -->
+                    <TextBlock Text="{Binding Message}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--  Current Message Text  -->
+        <TextBox x:Name="CurrentMessage"
+                 Grid.Row="2"
+                 Grid.Column="0"
+                 AcceptsReturn="True"
+                 IsEnabled="{Binding Path=ConnectionInformation.IsEditing,
+                                     Converter={StaticResource BooleanConverter},
+                                     ConverterParameter=reverse}" />
+
+        <!--  Send Message Button  -->
+        <Button Grid.Row="2"
+                Grid.Column="2"
+                Command="{Binding SendMessageCommand}"
+                CommandParameter="{Binding Text,
+                                           ElementName=CurrentMessage}"
+                Content="Send">
+
+            <Button.IsEnabled>
+                <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
+                    <Binding Converter="{StaticResource BooleanConverter}"
+                             ConverterParameter="reverse"
+                             Path="ConnectionInformation.IsEditing" />
+                    <Binding Converter="{StaticResource EmptyStringConverter}"
+                             ConverterParameter="reverse"
+                             ElementName="CurrentMessage"
+                             Path="Text" />
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
     </Grid>
 </UserControl>

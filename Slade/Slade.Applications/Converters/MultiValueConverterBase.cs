@@ -5,70 +5,69 @@ using System.Windows.Data;
 namespace Slade.Applications.Converters
 {
     /// <summary>
-    /// Provides an abstract implementation of the <see cref="IValueConverter"/> interface.
+    /// Provides an abstract implementation of the <see cref="IMultiValueConverter"/> interface.
     /// </summary>
-    public abstract class ValueConverterBase : ConverterBase, IValueConverter
+    public abstract class MultiValueConverterBase : ConverterBase, IMultiValueConverter
     {
-        /// <summary>
-        /// Gets the expected resulting type of the current conversation pass.
-        /// </summary>
-        protected Type TargetType { get; private set; }
-
         /// <summary>
         /// Gets the culture information provided to the current conversation pass.
         /// </summary>
         protected CultureInfo Culture { get; private set; }
 
         /// <summary>
-        /// Converts the given value into the expected resulting type.
+        /// Converts the given values into the expecting resulting type.
         /// </summary>
-        /// <param name="value">The value to undergo the conversion process.</param>
+        /// <param name="values">A collection of values to undergo the conversion process.</param>
         /// <param name="targetType">The expected resulting type of the conversion.</param>
         /// <param name="parameter">An optional parameter that may affect the conversion process.</param>
         /// <param name="culture">Information pertaining to the culture required for use under the conversion.</param>
-        /// <returns>The resulting value from the conversion process.</returns>
+        /// <returns>The resulting value from the conversion process, which is an aggregate of the input values.</returns>
         /// <exception cref="NotSupportedException">Thrown when the converter does not support this direction of conversion.</exception>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            TargetType = targetType;
             Culture = culture;
 
-            return Convert(value, parameter);
+            return Convert(values, targetType, parameter);
         }
 
         /// <summary>
-        /// Converts the given value into the expected resulting type.
+        /// Converts the given values into the expecting resulting type.
         /// </summary>
-        /// <param name="value">The value to undergo the conversion process.</param>
+        /// <param name="values">A collection of values to undergo the conversion process.</param>
+        /// <param name="targetType">The expected resulting type of the conversion.</param>
         /// <param name="parameter">An optional parameter that may affect the conversion process.</param>
-        /// <returns>The resulting value from the conversion process.</returns>
+        /// <returns>The resulting value from the conversion process, which is an aggregate of the input values.</returns>
         /// <exception cref="NotSupportedException">Thrown when the converter does not support this direction of conversion.</exception>
-        protected virtual object Convert(object value, object parameter)
+        protected virtual object Convert(object[] values, Type targetType, object parameter)
         {
             throw new NotSupportedException();
         }
 
         /// <summary>
-        /// Converts the given value back to the original type.
+        /// Converts the given value back to the original types.
         /// </summary>
         /// <param name="value">The value to undergo the backward conversion process.</param>
-        /// <param name="targetType">The type of the original value before conversion.</param>
+        /// <param name="targetTypes">The types of the original values before conversion.</param>
         /// <param name="parameter">An optional parameter that may affect the backward conversion process.</param>
         /// <param name="culture">Information pertaining to the culture required for use under the backward conversion.</param>
-        /// <returns>The resulting value from the conversion process.</returns>
+        /// <returns>The resulting values from the conversion process.</returns>
         /// <exception cref="NotSupportedException">Thrown when the converter does not support this direction of conversion.</exception>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            throw new System.NotImplementedException();
+            Culture = culture;
+
+            return ConvertBack(value, targetTypes, parameter);
         }
 
         /// <summary>
-        /// Converts the given value back to the original type.
+        /// Converts the given value back to the original types.
         /// </summary>
         /// <param name="value">The value to undergo the backward conversion process.</param>
+        /// <param name="targetTypes">The types of the original values before conversion.</param>
         /// <param name="parameter">An optional parameter that may affect the backward conversion process.</param>
+        /// <returns>The resulting values from the conversion process.</returns>
         /// <exception cref="NotSupportedException">Thrown when the converter does not support this direction of conversion.</exception>
-        protected virtual object ConvertBack(object value, object parameter)
+        protected virtual object[] ConvertBack(object value, Type[] targetTypes, object parameter)
         {
             throw new NotSupportedException();
         }
