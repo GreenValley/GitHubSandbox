@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -49,8 +50,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Networking\CommunicationChannelClient.cs" />
+    <Compile Include="Networking\CommunicationChannelService.cs" />
     <Compile Include="Networking\CommunicationMessage.cs" />
+    <Compile Include="Networking\CommunicationMessageReceivedEventArgs.cs" />
     <Compile Include="Networking\ConnectionInformation.cs" />
+    <Compile Include="Networking\ICommunicationChannel.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstantMessagingViewModel.cs" />
     <Compile Include="Views\ConnectionView.xaml.cs">

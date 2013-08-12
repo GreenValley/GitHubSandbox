@@ -5,8 +5,16 @@ namespace Slade.Applications.ClientServerApplication.Networking
     /// <summary>
     /// Represents a message sent to/from a connected user.
     /// </summary>
+    [Serializable]
     public class CommunicationMessage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommunicationMessage"/> class.
+        /// </summary>
+        public CommunicationMessage()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommunicationMessage"/> class.
         /// </summary>
@@ -30,21 +38,21 @@ namespace Slade.Applications.ClientServerApplication.Networking
         /// <summary>
         /// Gets the name of the user the message originated from.
         /// </summary>
-        public string Username { get; private set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Gets the message sent by the connected user.
         /// </summary>
-        public string Message { get; private set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets the date/time the message was sent by the connected user.
         /// </summary>
-        public DateTime Timestamp { get; private set; }
+        public DateTime Timestamp { get; set; }
 
         /// <summary>
         /// Gets a value that indicates whether the message originated from the local user.
         /// </summary>
-        public bool IsLocalUser { get; private set; }
+        public bool IsLocalUser { get; set; }
     }
 }
