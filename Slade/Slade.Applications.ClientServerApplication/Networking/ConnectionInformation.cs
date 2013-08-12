@@ -1,4 +1,4 @@
-﻿namespace Slade.Applications.ClientServerApplication
+﻿namespace Slade.Applications.ClientServerApplication.Networking
 {
     /// <summary>
     /// Contains information pertaining to a simple peer-to-peer network connection that can be data bound.

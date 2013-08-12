@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Slade.Applications.ClientServerApplication.Networking;
+using System;
 using System.Windows;
 
 namespace Slade.Applications.ClientServerApplication.ViewModels

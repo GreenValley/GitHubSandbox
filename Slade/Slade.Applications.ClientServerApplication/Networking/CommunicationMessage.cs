@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Slade.Applications.ClientServerApplication
+namespace Slade.Applications.ClientServerApplication.Networking
 {
     /// <summary>
     /// Represents a message sent to/from a connected user.

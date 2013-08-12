@@ -4,11 +4,6 @@
              xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications">
 
     <Grid>
-        <Grid.Resources>
-            <converters:BooleanConverter x:Key="BooleanConverter" />
-            <converters:EmptyStringConverter x:Key="EmptyStringConverter" />
-        </Grid.Resources>
-
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="5" />
@@ -41,7 +36,7 @@
                  Grid.Column="0"
                  AcceptsReturn="True"
                  IsEnabled="{Binding Path=ConnectionInformation.IsEditing,
-                                     Converter={StaticResource BooleanConverter},
+                                     Converter={x:Static Member=converters:BooleanConverter.Instance},
                                      ConverterParameter=reverse}" />
 
         <!--  Send Message Button  -->
@@ -54,10 +49,10 @@
 
             <Button.IsEnabled>
                 <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
-                    <Binding Converter="{StaticResource BooleanConverter}"
+                    <Binding Converter="{x:Static Member=converters:BooleanConverter.Instance}"
                              ConverterParameter="reverse"
                              Path="ConnectionInformation.IsEditing" />
-                    <Binding Converter="{StaticResource EmptyStringConverter}"
+                    <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
                              ElementName="CurrentMessage"
                              Path="Text" />

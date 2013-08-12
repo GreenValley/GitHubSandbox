@@ -49,8 +49,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommunicationMessage.cs" />
-    <Compile Include="ConnectionInformation.cs" />
+    <Compile Include="Networking\CommunicationMessage.cs" />
+    <Compile Include="Networking\ConnectionInformation.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstantMessagingViewModel.cs" />
     <Compile Include="Views\ConnectionView.xaml.cs">
