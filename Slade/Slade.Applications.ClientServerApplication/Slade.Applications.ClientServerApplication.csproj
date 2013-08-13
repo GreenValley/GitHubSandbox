@@ -50,6 +50,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\CommunicationStateBrushConverter.cs" />
+    <Compile Include="Networking\CommunicationChannelBase.cs" />
     <Compile Include="Networking\CommunicationChannelClient.cs" />
     <Compile Include="Networking\CommunicationChannelService.cs" />
     <Compile Include="Networking\CommunicationMessage.cs" />
@@ -123,6 +125,7 @@
       <Name>Slade</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

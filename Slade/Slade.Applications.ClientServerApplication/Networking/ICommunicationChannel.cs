@@ -10,6 +10,16 @@ namespace Slade.Applications.ClientServerApplication.Networking
     public interface ICommunicationChannel
     {
         /// <summary>
+        /// Raised when the connection state of the communication channel changes.
+        /// </summary>
+        event EventHandler StateChanged;
+
+        /// <summary>
+        /// Gets the state of the communication channel connection.
+        /// </summary>
+        CommunicationState State { get; }
+
+        /// <summary>
         /// Opens a connection to the specified address.
         /// </summary>
         /// <param name="address">The URL address on which to open a connection.</param>

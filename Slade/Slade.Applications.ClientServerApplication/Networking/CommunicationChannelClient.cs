@@ -6,9 +6,8 @@ namespace Slade.Applications.ClientServerApplication.Networking
     /// <summary>
     /// Implements the <see cref="ICommunicationChannel"/> using a SOAP based service client proxy.
     /// </summary>
-    public class CommunicationChannelClient : ICommunicationChannel
+    public class CommunicationChannelClient : CommunicationChannelBase<ClientBase<ICommunicationChannel>>
     {
-        private InternalCommunicationChannelClient mInternalChannel;
         private string mServerAddress;
 
         /// <summary>
@@ -16,7 +15,7 @@ namespace Slade.Applications.ClientServerApplication.Networking
         /// </summary>
         /// <param name="address">The address to which to send messages.</param>
         /// <exception cref="ArgumentException">Thrown when the given address is not a valid string.</exception>
-        public void OpenConnection(string address)
+        public override void OpenConnection(string address)
         {
             VerificationProvider.VerifyValidString(address, "address");
 
@@ -29,20 +28,20 @@ namespace Slade.Applications.ClientServerApplication.Networking
             CloseConnection();
 
             // Update the endpoint address before opening the connection
+            // Note: A connection will be opened upon constructing the client channel.
             mServerAddress = address;
-            mInternalChannel = new InternalCommunicationChannelClient(address);
-            mInternalChannel.Open();
+            CommunicationObject = new InternalCommunicationChannelClient(address);
         }
 
         /// <summary>
         /// Closes any open connections and prevents the transmission of any further messages.
         /// </summary>
-        public void CloseConnection()
+        public override void CloseConnection()
         {
-            if (mInternalChannel != null)
+            if (CommunicationObject != null)
             {
-                mInternalChannel.Close();
-                mInternalChannel = null;
+                CommunicationObject.Close();
+                CommunicationObject = null;
             }
         }
 
@@ -52,21 +51,14 @@ namespace Slade.Applications.ClientServerApplication.Networking
         /// <param name="message">The communication message to be transmitted to the recipient.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given communication message is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown when no client channel has been opened.</exception>
-        public void Transmit(CommunicationMessage message)
+        public override void Transmit(CommunicationMessage message)
         {
             VerificationProvider.VerifyNotNull(message, "message");
 
             EnsureConnected();
 
-            mInternalChannel.ClientChannel.Transmit(message);
-        }
-
-        private void EnsureConnected()
-        {
-            if (mInternalChannel == null)
-            {
-                throw new InvalidOperationException("No client channel has been opened.");
-            }
+            var internalChannel = (InternalCommunicationChannelClient)CommunicationObject;
+            internalChannel.ClientChannel.Transmit(message);
         }
 
         /// <summary>

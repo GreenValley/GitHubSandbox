@@ -22,15 +22,14 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             VerificationProvider.VerifyNotNull(connectionManager, "connectionManager");
 
             mConnectionManager = connectionManager;
-            ConnectionInformation = connectionManager.ConnectionInformation;
 
             RefreshHostingConnectionCommand =
                 new DelegateCommand(
-                    x => RefreshConnection(mConnectionManager.ChannelService, ConnectionInformation.HostingAddress));
+                    x => RefreshConnection(mConnectionManager.ChannelService, ConnectionManager.ConnectionInformation.HostingAddress));
 
             RefreshClientConnectionCommand =
                 new DelegateCommand(
-                    x => RefreshConnection(mConnectionManager.ChannelClient, ConnectionInformation.RecipientAddress));
+                    x => RefreshConnection(mConnectionManager.ChannelClient, ConnectionManager.ConnectionInformation.RecipientAddress));
         }
 
         /// <summary>
@@ -44,9 +43,12 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         public ICommand RefreshClientConnectionCommand { get; private set; }
 
         /// <summary>
-        /// Provides access to the current configurable network connection information.
+        /// Provides access to the manager of the communication channel connections.
         /// </summary>
-        public ConnectionInformation ConnectionInformation { get; private set; }
+        public ConnectionManager ConnectionManager
+        {
+            get { return mConnectionManager; }
+        }
 
         private void RefreshConnection(ICommunicationChannel channel, string address)
         {
@@ -54,7 +56,7 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             {
                 channel.OpenConnection(address);
             }
-            catch (Exception ex)    // TODO: Determine specific exception types.
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(ex.Message, "Connection Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

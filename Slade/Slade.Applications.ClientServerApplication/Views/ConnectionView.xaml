@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Slade.Applications.ClientServerApplication.Views.ConnectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications">
+             xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications"
+             xmlns:localConverters="clr-namespace:Slade.Applications.ClientServerApplication.Converters">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -28,8 +29,8 @@
         <TextBox Grid.Row="1"
                  Grid.Column="0"
                  Grid.ColumnSpan="7"
-                 IsEnabled="{Binding Path=ConnectionInformation.IsEditing}"
-                 Text="{Binding Path=ConnectionInformation.Username,
+                 IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing}"
+                 Text="{Binding Path=ConnectionManager.ConnectionInformation.Username,
                                 UpdateSourceTrigger=PropertyChanged,
                                 Mode=TwoWay}" />
 
@@ -39,8 +40,10 @@
                    Text="Hosting Address" />
         <TextBox Grid.Row="3"
                  Grid.Column="0"
-                 IsEnabled="{Binding Path=ConnectionInformation.IsEditing}"
-                 Text="{Binding Path=ConnectionInformation.HostingAddress,
+                 Background="{Binding Path=ConnectionManager.ChannelService.State,
+                                      Converter={x:Static Member=localConverters:CommunicationStateBrushConverter.Instance}}"
+                 IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing}"
+                 Text="{Binding Path=ConnectionManager.ConnectionInformation.HostingAddress,
                                 UpdateSourceTrigger=PropertyChanged,
                                 Mode=TwoWay}" />
         <Button Grid.Row="3"
@@ -50,10 +53,10 @@
 
             <Button.IsEnabled>
                 <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
-                    <Binding Path="ConnectionInformation.IsEditing" />
+                    <Binding Path="ConnectionManager.ConnectionInformation.IsEditing" />
                     <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
-                             Path="ConnectionInformation.HostingAddress" />
+                             Path="ConnectionManager.ConnectionInformation.HostingAddress" />
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
@@ -64,8 +67,10 @@
                    Text="Recipient Address" />
         <TextBox Grid.Row="3"
                  Grid.Column="4"
-                 IsEnabled="{Binding Path=ConnectionInformation.IsEditing}"
-                 Text="{Binding Path=ConnectionInformation.RecipientAddress,
+                 Background="{Binding Path=ConnectionManager.ChannelClient.State,
+                                      Converter={x:Static Member=localConverters:CommunicationStateBrushConverter.Instance}}"
+                 IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing}"
+                 Text="{Binding Path=ConnectionManager.ConnectionInformation.RecipientAddress,
                                 Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}" />
         <Button Grid.Row="3"
@@ -75,10 +80,10 @@
 
             <Button.IsEnabled>
                 <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
-                    <Binding Path="ConnectionInformation.IsEditing" />
+                    <Binding Path="ConnectionManager.ConnectionInformation.IsEditing" />
                     <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
-                             Path="ConnectionInformation.RecipientAddress" />
+                             Path="ConnectionManager.ConnectionInformation.RecipientAddress" />
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>

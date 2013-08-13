@@ -7,14 +7,13 @@ namespace Slade.Applications.ClientServerApplication.Networking
     /// Provides a server-side implementation of the <see cref="ICommunicationChannel"/> using a self-hosting service proxy.
     /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CommunicationChannelService : ICommunicationChannel
+    public class CommunicationChannelService : CommunicationChannelBase<ServiceHost>
     {
         /// <summary>
         /// Raised when a communication message is transmitted over the communication channel and received by this service.
         /// </summary>
         public event EventHandler<CommunicationMessageReceivedEventArgs> CommunicationMessageReceived;
 
-        private ServiceHost mService;
         private string mHostingAddress;
 
         /// <summary>
@@ -22,7 +21,7 @@ namespace Slade.Applications.ClientServerApplication.Networking
         /// </summary>
         /// <param name="address">The URL address on which to listen for incoming messages.</param>
         /// <exception cref="ArgumentException">Thrown when the given address is not a valid string.</exception>
-        public void OpenConnection(string address)
+        public override void OpenConnection(string address)
         {
             VerificationProvider.VerifyValidString(address, "address");
 
@@ -36,24 +35,24 @@ namespace Slade.Applications.ClientServerApplication.Networking
 
             // Fire up the service host using ourselves as the hosted service
             mHostingAddress = address;
-            mService = new ServiceHost(this, new Uri(address));
-            mService.Open();
+            CommunicationObject = new ServiceHost(this, new Uri(address));
+            CommunicationObject.Open();
         }
 
         /// <summary>
         /// Closes down any existing connections and stops listening for incoming messages.
         /// </summary>
-        public void CloseConnection()
+        public override void CloseConnection()
         {
-            if (mService != null)
+            if (CommunicationObject != null)
             {
                 // We can only close the connection if it is opening or already open
-                if (mService.State == CommunicationState.Opening || mService.State == CommunicationState.Opened)
+                if (State == CommunicationState.Opening || State == CommunicationState.Opened)
                 {
-                    mService.Close();
+                    CommunicationObject.Close();
                 }
 
-                mService = null;
+                CommunicationObject = null;
             }
         }
 
@@ -62,7 +61,7 @@ namespace Slade.Applications.ClientServerApplication.Networking
         /// </summary>
         /// <param name="message">The communication message to be transmitted to the recipient.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given communication message is null.</exception>
-        public void Transmit(CommunicationMessage message)
+        public override void Transmit(CommunicationMessage message)
         {
             VerificationProvider.VerifyNotNull(message, "message");
 
