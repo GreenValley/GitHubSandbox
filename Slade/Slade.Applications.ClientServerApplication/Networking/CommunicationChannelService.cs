@@ -15,6 +15,7 @@ namespace Slade.Applications.ClientServerApplication.Networking
         public event EventHandler<CommunicationMessageReceivedEventArgs> CommunicationMessageReceived;
 
         private ServiceHost mService;
+        private string mHostingAddress;
 
         /// <summary>
         /// Opens a connection to listen on the specified address.
@@ -25,9 +26,16 @@ namespace Slade.Applications.ClientServerApplication.Networking
         {
             VerificationProvider.VerifyValidString(address, "address");
 
+            // Only reset the connection if the given address differs from the one we are currently using
+            if (String.Equals(mHostingAddress, address, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
             CloseConnection();
 
             // Fire up the service host using ourselves as the hosted service
+            mHostingAddress = address;
             mService = new ServiceHost(this, new Uri(address));
             mService.Open();
         }
@@ -39,7 +47,12 @@ namespace Slade.Applications.ClientServerApplication.Networking
         {
             if (mService != null)
             {
-                mService.Close();
+                // We can only close the connection if it is opening or already open
+                if (mService.State == CommunicationState.Opening || mService.State == CommunicationState.Opened)
+                {
+                    mService.Close();
+                }
+
                 mService = null;
             }
         }

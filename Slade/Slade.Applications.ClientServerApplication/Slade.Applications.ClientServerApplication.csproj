@@ -55,6 +55,7 @@
     <Compile Include="Networking\CommunicationMessage.cs" />
     <Compile Include="Networking\CommunicationMessageReceivedEventArgs.cs" />
     <Compile Include="Networking\ConnectionInformation.cs" />
+    <Compile Include="Networking\ConnectionManager.cs" />
     <Compile Include="Networking\ICommunicationChannel.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstantMessagingViewModel.cs" />

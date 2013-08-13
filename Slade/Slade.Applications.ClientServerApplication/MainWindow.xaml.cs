@@ -9,6 +9,7 @@ namespace Slade.Applications.ClientServerApplication
     public partial class MainWindow
     {
         private readonly ConnectionInformation mConnectionInformation = new ConnectionInformation();
+        private readonly ConnectionManager mConnectionManager;
 
         private readonly ConnectionViewModel mConnectionViewModel;
         private readonly InstantMessagingViewModel mInstantMessagingViewModel;
@@ -18,8 +19,10 @@ namespace Slade.Applications.ClientServerApplication
         /// </summary>
         public MainWindow()
         {
-            mConnectionViewModel = new ConnectionViewModel(mConnectionInformation);
-            mInstantMessagingViewModel = new InstantMessagingViewModel(mConnectionInformation);
+            mConnectionManager = new ConnectionManager(mConnectionInformation);
+
+            mConnectionViewModel = new ConnectionViewModel(mConnectionManager);
+            mInstantMessagingViewModel = new InstantMessagingViewModel(mConnectionManager);
 
             InitializeComponent();
 

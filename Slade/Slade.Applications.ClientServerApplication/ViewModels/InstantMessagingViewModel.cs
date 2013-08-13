@@ -11,7 +11,7 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
     /// </summary>
     public class InstantMessagingViewModel : ViewModelBase
     {
-        private readonly ConnectionInformation mConnectionInformation;
+        private readonly ConnectionManager mConnectionManager;
 
         private readonly ObservableCollection<CommunicationMessage> mMessages =
             new ObservableCollection<CommunicationMessage>();
@@ -19,15 +19,18 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         private string mCurrentMessage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionInformation"/> class.
+        /// Initializes a new instance of the <see cref="InstantMessagingViewModel"/> class.
         /// </summary>
-        /// <param name="connectionInformation">Information pertaining to the configurable network connection.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the given connection information is null.</exception>
-        public InstantMessagingViewModel(ConnectionInformation connectionInformation)
+        /// <param name="connectionManager">Manager of the client and server communication channels.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the given connection manager is null.</exception>
+        public InstantMessagingViewModel(ConnectionManager connectionManager)
         {
-            VerificationProvider.VerifyNotNull(connectionInformation, "connectionInformation");
+            VerificationProvider.VerifyNotNull(connectionManager, "connectionManager");
 
-            mConnectionInformation = connectionInformation;
+            ConnectionInformation = connectionManager.ConnectionInformation;
+
+            mConnectionManager = connectionManager;
+            mConnectionManager.ChannelService.CommunicationMessageReceived += ChannelService_CommunicationMessageReceived;
 
             // Note: The command cannot use a command parameter as we are specifically acting upon the CurrentMessage property.
             SendMessageCommand = new DelegateCommand(x => SendMessage(), x => CanSendMessage());
@@ -41,10 +44,7 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         /// <summary>
         /// Provides access to the current configurable network connection information.
         /// </summary>
-        public ConnectionInformation ConnectionInformation
-        {
-            get { return mConnectionInformation; }
-        }
+        public ConnectionInformation ConnectionInformation { get; private set; }
 
         /// <summary>
         /// Provides access to the collection of messages sent to/from the connected user.
@@ -69,7 +69,8 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             var communicationMessage = new CommunicationMessage(ConnectionInformation.Username, CurrentMessage, DateTime.Now, isLocalUser: true);
             mMessages.Add(communicationMessage);
 
-            // TODO: Transmit the message to the recipient.
+            // Transmit the message to the recipient
+            mConnectionManager.ChannelClient.Transmit(communicationMessage);
 
             // Clear the message so the user can type a new one
             CurrentMessage = String.Empty;
@@ -78,6 +79,12 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
         private bool CanSendMessage()
         {
             return !String.IsNullOrWhiteSpace(CurrentMessage);
+        }
+
+        private void ChannelService_CommunicationMessageReceived(object sender, CommunicationMessageReceivedEventArgs e)
+        {
+            // Simply add the received communication message to the observable collection
+            mMessages.Add(e.Message);
         }
     }
 }
