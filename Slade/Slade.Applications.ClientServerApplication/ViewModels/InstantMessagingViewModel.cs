@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
 using System.Windows.Input;
 
 namespace Slade.Applications.ClientServerApplication.ViewModels
@@ -30,6 +31,7 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
             ConnectionInformation = connectionManager.ConnectionInformation;
 
             mConnectionManager = connectionManager;
+            mConnectionManager.ChannelClient.StateChanged += ChannelClient_StateChanged;
             mConnectionManager.ChannelService.CommunicationMessageReceived += ChannelService_CommunicationMessageReceived;
 
             // Note: The command cannot use a command parameter as we are specifically acting upon the CurrentMessage property.
@@ -65,20 +67,36 @@ namespace Slade.Applications.ClientServerApplication.ViewModels
 
         private void SendMessage()
         {
-            // Log the message locally so we can keep track of sent messages
-            var communicationMessage = new CommunicationMessage(ConnectionInformation.Username, CurrentMessage, DateTime.Now, isLocalUser: true);
-            mMessages.Add(communicationMessage);
-
-            // Transmit the message to the recipient
-            mConnectionManager.ChannelClient.Transmit(communicationMessage);
+            SendMessage(CurrentMessage);
 
             // Clear the message so the user can type a new one
             CurrentMessage = String.Empty;
         }
 
+        private void SendMessage(string message)
+        {
+            // Log the message locally so we can keep track of sent messages
+            var communicationMessage = new CommunicationMessage(ConnectionInformation.Username, message, DateTime.Now, isLocalUser: true);
+            mMessages.Add(communicationMessage);
+
+            // Transmit the message to the recipient
+            mConnectionManager.ChannelClient.Transmit(communicationMessage);
+        }
+
         private bool CanSendMessage()
         {
             return !String.IsNullOrWhiteSpace(CurrentMessage);
+        }
+
+        private void ChannelClient_StateChanged(object sender, EventArgs e)
+        {
+            var clientConnectionState = mConnectionManager.ChannelClient.State;
+
+            if (clientConnectionState == CommunicationState.Opening || clientConnectionState == CommunicationState.Opened)
+            {
+                // A new connection has just been established with the service, so transmit a greeting message
+                SendMessage("Connection Established!");
+            }
         }
 
         private void ChannelService_CommunicationMessageReceived(object sender, CommunicationMessageReceivedEventArgs e)
