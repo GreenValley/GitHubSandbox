@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Slade.Applications.ClientServerApplication.Views.InstantMessagingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications">
+             xmlns:slade="http://schemas.slade.org/applications/">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -38,12 +38,12 @@
                                    FontWeight="Bold"
                                    Text="{Binding Username}"
                                    Visibility="{Binding IsLocalUser,
-                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance}}" />
+                                                        Converter={x:Static Member=slade:VisibilityConverter.Instance}}" />
                         <TextBlock Grid.Column="4"
                                    FontWeight="Bold"
                                    Text="{Binding Username}"
                                    Visibility="{Binding IsLocalUser,
-                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance},
+                                                        Converter={x:Static Member=slade:VisibilityConverter.Instance},
                                                         ConverterParameter=reverse}" />
 
                         <!--  Message Content  -->
@@ -58,17 +58,17 @@
                                    Foreground="Gray"
                                    Text="{Binding Timestamp,
                                                   StringFormat={}({0}),
-                                                  Converter={x:Static Member=converters:DateTimeConverter.Instance}}"
+                                                  Converter={x:Static Member=slade:DateTimeConverter.Instance}}"
                                    Visibility="{Binding IsLocalUser,
-                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance},
+                                                        Converter={x:Static Member=slade:VisibilityConverter.Instance},
                                                         ConverterParameter=reverse}" />
                         <TextBlock Grid.Column="4"
                                    Foreground="Gray"
                                    Text="{Binding Timestamp,
                                                   StringFormat={}({0}),
-                                                  Converter={x:Static Member=converters:DateTimeConverter.Instance}}"
+                                                  Converter={x:Static Member=slade:DateTimeConverter.Instance}}"
                                    Visibility="{Binding IsLocalUser,
-                                                        Converter={x:Static Member=converters:VisibilityConverter.Instance}}" />
+                                                        Converter={x:Static Member=slade:VisibilityConverter.Instance}}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -79,7 +79,7 @@
                  Grid.Column="0"
                  AcceptsReturn="True"
                  IsEnabled="{Binding Path=ConnectionInformation.IsEditing,
-                                     Converter={x:Static Member=converters:BooleanConverter.Instance},
+                                     Converter={x:Static Member=slade:BooleanConverter.Instance},
                                      ConverterParameter=reverse}"
                  PreviewKeyDown="CurrentMessage_PreviewKeyDown"
                  Text="{Binding CurrentMessage,
@@ -94,11 +94,11 @@
                 Content="Send">
 
             <Button.IsEnabled>
-                <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
-                    <Binding Converter="{x:Static Member=converters:BooleanConverter.Instance}"
+                <MultiBinding Converter="{x:Static Member=slade:AndOperator.Instance}">
+                    <Binding Converter="{x:Static Member=slade:BooleanConverter.Instance}"
                              ConverterParameter="reverse"
                              Path="ConnectionInformation.IsEditing" />
-                    <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
+                    <Binding Converter="{x:Static Member=slade:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
                              Path="CurrentMessage" />
                 </MultiBinding>

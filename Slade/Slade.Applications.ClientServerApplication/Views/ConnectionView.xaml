@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="Slade.Applications.ClientServerApplication.Views.ConnectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Slade.Applications.Converters;assembly=Slade.Applications"
-             xmlns:localConverters="clr-namespace:Slade.Applications.ClientServerApplication.Converters">
+             xmlns:converters="clr-namespace:Slade.Applications.ClientServerApplication.Converters"
+             xmlns:slade="http://schemas.slade.org/applications/">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -41,7 +41,7 @@
         <TextBox Grid.Row="3"
                  Grid.Column="0"
                  Background="{Binding Path=ConnectionManager.ChannelService.State,
-                                      Converter={x:Static Member=localConverters:CommunicationStateBrushConverter.Instance}}"
+                                      Converter={x:Static Member=converters:CommunicationStateBrushConverter.Instance}}"
                  IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing}"
                  Text="{Binding Path=ConnectionManager.ConnectionInformation.HostingAddress,
                                 UpdateSourceTrigger=PropertyChanged,
@@ -52,9 +52,9 @@
                 Content="Refresh">
 
             <Button.IsEnabled>
-                <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
+                <MultiBinding Converter="{x:Static Member=slade:AndOperator.Instance}">
                     <Binding Path="ConnectionManager.ConnectionInformation.IsEditing" />
-                    <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
+                    <Binding Converter="{x:Static Member=slade:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
                              Path="ConnectionManager.ConnectionInformation.HostingAddress" />
                 </MultiBinding>
@@ -68,7 +68,7 @@
         <TextBox Grid.Row="3"
                  Grid.Column="4"
                  Background="{Binding Path=ConnectionManager.ChannelClient.State,
-                                      Converter={x:Static Member=localConverters:CommunicationStateBrushConverter.Instance}}"
+                                      Converter={x:Static Member=converters:CommunicationStateBrushConverter.Instance}}"
                  IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing}"
                  Text="{Binding Path=ConnectionManager.ConnectionInformation.RecipientAddress,
                                 Mode=TwoWay,
@@ -79,9 +79,9 @@
                 Content="Refresh">
 
             <Button.IsEnabled>
-                <MultiBinding Converter="{x:Static Member=converters:AndOperator.Instance}">
+                <MultiBinding Converter="{x:Static Member=slade:AndOperator.Instance}">
                     <Binding Path="ConnectionManager.ConnectionInformation.IsEditing" />
-                    <Binding Converter="{x:Static Member=converters:EmptyStringConverter.Instance}"
+                    <Binding Converter="{x:Static Member=slade:EmptyStringConverter.Instance}"
                              ConverterParameter="reverse"
                              Path="ConnectionManager.ConnectionInformation.RecipientAddress" />
                 </MultiBinding>

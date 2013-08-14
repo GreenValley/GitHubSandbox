@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3478113-4816-4675-991A-BB7DA55B68D1}</ProjectGuid>
+    <ProjectGuid>{6854CB5C-DB9D-412E-B03F-136D3A29FAA1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Slade.Applications.ClientServerApplication</RootNamespace>
-    <AssemblyName>Slade.Applications.ClientServerApplication</AssemblyName>
+    <RootNamespace>Slade.Applications.DuplexCommunication</RootNamespace>
+    <AssemblyName>Slade.Applications.DuplexCommunication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -53,15 +56,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Converters\CommunicationStateBrushConverter.cs" />
-    <Compile Include="Networking\CommunicationChannelBase.cs" />
-    <Compile Include="Networking\CommunicationChannelClient.cs" />
-    <Compile Include="Networking\CommunicationChannelService.cs" />
-    <Compile Include="Networking\CommunicationMessage.cs" />
-    <Compile Include="Networking\CommunicationMessageReceivedEventArgs.cs" />
+    <Compile Include="Networking\ApplicationType.cs" />
     <Compile Include="Networking\ConnectionInformation.cs" />
     <Compile Include="Networking\ConnectionManager.cs" />
-    <Compile Include="Networking\ICommunicationChannel.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstantMessagingViewModel.cs" />
     <Compile Include="Views\ConnectionView.xaml.cs">
@@ -123,12 +120,15 @@
       <Project>{4525733f-d96e-4565-967e-f87e82a6ad2b}</Project>
       <Name>Slade.Applications</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Slade.Networking\Slade.Networking.csproj">
+      <Project>{3430800a-43ee-4d43-bacf-75f3bde605e8}</Project>
+      <Name>Slade.Networking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Slade\Slade.csproj">
       <Project>{c7d2c693-bbcc-41f0-8000-701e74c31777}</Project>
       <Name>Slade</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

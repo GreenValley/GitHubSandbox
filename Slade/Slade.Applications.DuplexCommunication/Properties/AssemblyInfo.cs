@@ -4,9 +4,9 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Slade.Applications.ClientServerApplication")]
+[assembly: AssemblyTitle("Slade.Applications.DuplexCommunication")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("Slade.Applications.ClientServerApplication")]
+[assembly: AssemblyProduct("Slade.Applications.DuplexCommunication")]
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located

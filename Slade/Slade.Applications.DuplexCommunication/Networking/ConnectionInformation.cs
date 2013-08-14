@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Slade.Applications.ClientServerApplication.Networking
+namespace Slade.Applications.DuplexCommunication.Networking
 {
     /// <summary>
     /// Contains information pertaining to a simple peer-to-peer network connection that can be data bound.
@@ -8,8 +8,8 @@ namespace Slade.Applications.ClientServerApplication.Networking
     public sealed class ConnectionInformation : NotificationObject
     {
         private string mUsername;
-        private string mHostingAddress;
-        private string mRecipientAddress;
+        private string mAddress;
+        private int mApplicationTypeValue;
 
         private bool mIsEditing = true;
 
@@ -29,33 +29,36 @@ namespace Slade.Applications.ClientServerApplication.Networking
         }
 
         /// <summary>
-        /// Gets or sets the raw URI to use as the address for hosting the service.
+        /// Gets or sets the raw URI to use as the address for hosting or connecting to the service.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when an attempt is made to change the property
         /// value without first setting the <see cref="IsEditing"/> property to true.</exception>
-        public string HostingAddress
+        public string Address
         {
-            get { return mHostingAddress; }
+            get { return mAddress; }
             set
             {
                 AssertEditing();
-                SetValue<string>(ref mHostingAddress, value, "HostingAddress");
+                SetValue<string>(ref mAddress, value, "Address");
             }
         }
 
         /// <summary>
-        /// Gets or sets the raw URI to use as the address of the recipient service to connect to.
+        /// Gets the type of application connection to use.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when an attempt is made to change the property
-        /// value without first setting the <see cref="IsEditing"/> property to true.</exception>
-        public string RecipientAddress
+        public ApplicationType ApplicationType
         {
-            get { return mRecipientAddress; }
-            set
-            {
-                AssertEditing();
-                SetValue<string>(ref mRecipientAddress, value, "RecipientAddress");
-            }
+            get { return (ApplicationType)mApplicationTypeValue; }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer value for the application type.
+        /// </summary>
+        /// <seealso cref="ApplicationType"/>
+        public int ApplicationTypeValue
+        {
+            get { return mApplicationTypeValue; }
+            set { SetValue<int>(ref mApplicationTypeValue, value, "ApplicationTypeValue", "ApplicationType"); }
         }
 
         /// <summary>
