@@ -13,6 +13,7 @@ namespace Slade.Applications
         /// Raised when the value of a property of the object changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         /// Changes the value of the referenced variable and notifies any listeners of the property change.
         /// </summary>
