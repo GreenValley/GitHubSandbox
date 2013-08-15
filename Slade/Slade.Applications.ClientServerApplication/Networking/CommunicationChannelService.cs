@@ -65,7 +65,10 @@ namespace Slade.Applications.ClientServerApplication.Networking
         {
             VerificationProvider.VerifyNotNull(message, "message");
 
-            CommunicationMessageReceived.SafeInvoke<CommunicationMessageReceivedEventArgs>(this, new CommunicationMessageReceivedEventArgs(message));
+            // Make sure we mark the message as being from a remote user
+            message.IsLocalUser = false;
+
+            CommunicationMessageReceived.SafeInvoke(this, new CommunicationMessageReceivedEventArgs(message));
         }
     }
 }

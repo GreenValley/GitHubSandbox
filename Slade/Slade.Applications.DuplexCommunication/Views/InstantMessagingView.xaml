@@ -3,91 +3,86 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:slade="http://schemas.slade.org/applications/">
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="5" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition Width="5" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-		<!--  Communication Message Log View  -->
-		<ListView Grid.Row="0"
-		          Grid.Column="0"
-		          Grid.ColumnSpan="3"
-		          ItemsSource="{Binding Messages}">
+        <!--  Communication Message Log View  -->
+        <ListView Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  ItemsSource="{Binding Messages}">
 
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="5" />
-							<ColumnDefinition />
-							<ColumnDefinition Width="5" />
-							<ColumnDefinition Width="Auto" />
-						</Grid.ColumnDefinitions>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-						<!--  Username  -->
-						<TextBlock Grid.Column="0"
-						           FontWeight="Bold"
-						           Text="{Binding Username}"
-						           Visibility="{Binding IsLocalUser,
-						                                Converter={x:Static Member=slade:VisibilityConverter.Instance}}" />
+                        <!--  Username  -->
+                        <TextBlock Grid.Column="0"
+                                   FontWeight="Bold"
+                                   Text="{Binding Username}" />
 
-						<!--  Message Content  -->
-						<TextBlock Grid.Column="2"
-						           FontStyle="Italic"
-						           FontWeight="Normal"
-						           Text="{Binding Message}" />
+                        <!--  Message Content  -->
+                        <TextBlock Grid.Column="2"
+                                   FontStyle="Italic"
+                                   FontWeight="Normal"
+                                   Text="{Binding Message}" />
 
-						<!--  Timestamp  -->
-						<TextBlock Grid.Column="4"
-						           Foreground="Gray"
-						           Text="{Binding Timestamp,
-						                          StringFormat={}({0}),
-						                          Converter={x:Static Member=slade:DateTimeConverter.Instance}}"
-						           Visibility="{Binding IsLocalUser,
-						                                Converter={x:Static Member=slade:VisibilityConverter.Instance},
-						                                ConverterParameter=reverse}" />
-					</Grid>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+                        <!--  Timestamp  -->
+                        <TextBlock Grid.Column="4"
+                                   Foreground="Gray"
+                                   Text="{Binding Timestamp,
+                                                  StringFormat={}({0}),
+                                                  Converter={x:Static Member=slade:DateTimeConverter.Instance}}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-		<!--  Current Message Text  -->
-		<TextBox Grid.Row="2"
-		         Grid.Column="0"
-		         AcceptsReturn="True"
-		         IsEnabled="{Binding Path=ConnectionInformation.IsEditing,
-		                             Converter={x:Static Member=slade:BooleanConverter.Instance},
-		                             ConverterParameter=reverse}"
-		         PreviewKeyDown="CurrentMessage_PreviewKeyDown"
-		         Text="{Binding CurrentMessage,
-		                        Mode=TwoWay,
-		                        UpdateSourceTrigger=PropertyChanged}" />
+        <!--  Current Message Text  -->
+        <TextBox Grid.Row="2"
+                 Grid.Column="0"
+                 AcceptsReturn="True"
+                 IsEnabled="{Binding Path=ConnectionManager.ConnectionInformation.IsEditing,
+                                     Converter={x:Static Member=slade:BooleanConverter.Instance},
+                                     ConverterParameter=reverse}"
+                 PreviewKeyDown="CurrentMessage_PreviewKeyDown"
+                 Text="{Binding CurrentMessage,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
 
-		<!--  Send Message Button  -->
-		<Button x:Name="SendMessageButton"
-		        Grid.Row="2"
-		        Grid.Column="2"
-		        Command="{Binding SendMessageCommand}"
-		        Content="Send">
+        <!--  Send Message Button  -->
+        <Button x:Name="SendMessageButton"
+                Grid.Row="2"
+                Grid.Column="2"
+                Command="{Binding SendMessageCommand}"
+                Content="Send">
 
-			<Button.IsEnabled>
-				<MultiBinding Converter="{x:Static Member=slade:AndOperator.Instance}">
-					<Binding Converter="{x:Static Member=slade:BooleanConverter.Instance}"
-					         ConverterParameter="reverse"
-					         Path="ConnectionInformation.IsEditing" />
-					<Binding Converter="{x:Static Member=slade:EmptyStringConverter.Instance}"
-					         ConverterParameter="reverse"
-					         Path="CurrentMessage" />
-				</MultiBinding>
-			</Button.IsEnabled>
-		</Button>
-	</Grid>
+            <Button.IsEnabled>
+                <MultiBinding Converter="{x:Static Member=slade:AndOperator.Instance}">
+                    <Binding Converter="{x:Static Member=slade:BooleanConverter.Instance}"
+                             ConverterParameter="reverse"
+                             Path="ConnectionManager.ConnectionInformation.IsEditing" />
+                    <Binding Converter="{x:Static Member=slade:EmptyStringConverter.Instance}"
+                             ConverterParameter="reverse"
+                             Path="CurrentMessage" />
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
+    </Grid>
 </UserControl>
