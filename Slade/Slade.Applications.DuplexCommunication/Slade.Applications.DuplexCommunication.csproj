@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -57,9 +58,15 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Networking\ApplicationType.cs" />
+    <Compile Include="Networking\CommunicationChannelBase.cs" />
+    <Compile Include="Networking\CommunicationChannelClient.cs" />
+    <Compile Include="Networking\CommunicationChannelService.cs" />
+    <Compile Include="Networking\CommunicationMessageReceivedEventArgs.cs" />
     <Compile Include="Networking\ConnectionInformation.cs" />
     <Compile Include="Networking\ConnectionManager.cs" />
     <Compile Include="Networking\CommunicationMessage.cs" />
+    <Compile Include="Networking\ICommunicationChannel.cs" />
+    <Compile Include="Networking\UserProfile.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstantMessagingViewModel.cs" />
     <Compile Include="Views\ConnectionView.xaml.cs">
